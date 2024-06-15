@@ -1,0 +1,32 @@
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"
+  defer></script>
+
+
+<script>
+
+  $(function () {
+
+
+    const myAnimation = document.getElementById('lottie');
+
+    function startAnimationOnScrollIntoView(_playerId, _type) {
+      let scrollInteraction = LottieInteractivity.create({
+        player: _playerId,
+        mode: 'scroll',
+        actions: [
+          {
+            visibility: [0, 1.0],
+            type: _type,
+          }
+        ]
+      });
+    }
+
+    myAnimation.addEventListener('ready', () => {
+      startAnimationOnScrollIntoView('#lottie', 'play')
+    });
+
+  });
+
+</script>

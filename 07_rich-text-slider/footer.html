@@ -1,0 +1,99 @@
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+<script>
+
+  $(function () {
+    const richtextEl = document.getElementById('blog-post-content');
+    const elements = Array.from(richtextEl.children);
+    let curGroup = null;
+    let curWrapper = null;
+    const sliderClass = 'is-richtext';
+
+    function createSwiper() {
+      const prevButton = document.createElement('div');
+      prevButton.classList.add('swiper-button-prev', sliderClass);
+
+      const nextButton = document.createElement('div');
+      nextButton.classList.add('swiper-button-next', sliderClass);
+
+      const pagination = document.createElement('div');
+      pagination.classList.add('swiper-pagination', sliderClass);
+
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('blog-post_slider');
+
+      wrapper.appendChild(prevButton);
+      wrapper.appendChild(nextButton);
+      wrapper.appendChild(pagination);
+
+      return wrapper;
+    }
+
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+
+      if (element.tagName === 'FIGURE' && (
+        (i < elements.length - 1 && elements[i + 1].tagName === 'FIGURE') ||
+        (i > 0 && elements[i - 1].tagName === 'FIGURE')
+      )) {
+        if (!curGroup) {
+          curGroup = document.createElement('div');
+          curGroup.classList.add('swiper', sliderClass);
+        }
+
+        if (!curWrapper) {
+          curWrapper = document.createElement('div');
+          curWrapper.classList.add('swiper-wrapper', sliderClass);
+        }
+
+        const swiperSlide = document.createElement('div');
+        swiperSlide.classList.add('swiper-slide', sliderClass);
+        swiperSlide.appendChild(element);
+        curWrapper.appendChild(swiperSlide);
+
+        if (i === elements.length - 1) {
+          curGroup.appendChild(curWrapper);
+          const sliderWrapper = createSwiper();
+          sliderWrapper.appendChild(curGroup);
+          richtextEl.appendChild(sliderWrapper);
+          curGroup = null;
+          curWrapper = null;
+        }
+      } else {
+        if (curWrapper) {
+          const sliderWrapper = createSwiper();
+          curGroup.appendChild(curWrapper);
+          sliderWrapper.appendChild(curGroup);
+          richtextEl.insertBefore(sliderWrapper, element);
+          curGroup = null;
+          curWrapper = null;
+        }
+      }
+    }
+
+    if (curGroup) {
+      richtextEl.appendChild(curGroup);
+    }
+
+
+
+
+    const richtextSliders = $('.swiper.is-richtext');
+    richtextSliders.each(function (i, el) {
+      const swiper = new Swiper(el, {
+        speed: 500,
+        slidersPerView: 1,
+        autoHeight: true,
+        navigation: {
+          nextEl: $(el).closest('.blog-post_slider').children('.swiper-button-next')[0],
+          prevEl: $(el).closest('.blog-post_slider').children('.swiper-button-prev')[0],
+        },
+        pagination: {
+          el: $(el).closest('.blog-post_slider').children('.swiper-pagination')[0],
+          type: 'fraction'
+        }
+      });
+    });
+  });
+
+</script>

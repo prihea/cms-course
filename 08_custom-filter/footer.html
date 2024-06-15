@@ -1,0 +1,59 @@
+<script>
+  function hasCommonElement(arr1, arr2) {
+    return arr1.some(elem => arr2.includes(elem));
+  }
+
+
+  $(function () {
+    const filterCategories = ['all'];
+    const items = $('[data-filter-item]');
+
+    $('[data-filter-button]').on('click', function () {
+      const $this = $(this);
+      const curCategory = $this.data('filter-button');
+      let indexToRemove;
+
+      $this.toggleClass('is-active');
+
+      if ($this.hasClass('is-active')) {
+        indexToRemove = filterCategories.indexOf('all');
+        if (indexToRemove !== -1) {
+          filterCategories.splice(indexToRemove, 1);
+        }        
+        filterCategories.push(curCategory);
+      } else {
+        indexToRemove = filterCategories.indexOf(curCategory);
+        if (indexToRemove !== -1) {
+          filterCategories.splice(indexToRemove, 1);
+        }
+        if (filterCategories.length < 1) {
+          filterCategories.push('all');
+        }
+      }
+
+      for (let i = 0; i < items.length; i++) {
+        let tagCategories = [];
+        const tags = $(items[i]).find('[data-filter-tag]');
+        const curRootElement = $(items[i]);
+
+        for (let j = 0; j < tags.length; j++) {
+          tagCategories.push($(tags[j]).text());
+        }
+
+        if (!hasCommonElement(filterCategories, tagCategories) && filterCategories.indexOf('all') < 0) {
+          curRootElement.addClass('is-inactive');
+        } else {
+          curRootElement.removeClass('is-inactive');
+        }
+
+      }
+    });
+
+    $('#filter-reset').on('click', function () {
+      $('[data-filter-button]').removeClass('is-active');
+      $('.card_root').removeClass('is-inactive');
+      filterCategories.splice(0, filterCategories.length)
+    });
+  });
+
+</script>

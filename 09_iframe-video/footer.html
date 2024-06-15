@@ -1,0 +1,41 @@
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.min.js" defer></script>
+
+<script>
+  $(function () {
+
+    const lazyLoadInstance = new LazyLoad({
+      elements_selector: '[data-lazyload]',
+      threshold: 1000,
+      data_src: 'lazyload'
+    });
+
+
+    const swiperReviews = new Swiper('#swiper-reviews', {
+      spaceBetween: 40,
+      slidesPerView: 1,
+      pagination: {
+        el: '#swiper-reviews-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '#swiper-reviews-button-next',
+        prevEl: '#swiper-reviews-button-prev',
+      },
+    });
+
+    const swiperReviews2 = new Swiper('#swiper-reviews-2', {
+      spaceBetween: 40,
+      slidesPerView: 2,
+      pagination: {
+        el: '#swiper-reviews-pagination-2',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '#swiper-reviews-button-next-2',
+        prevEl: '#swiper-reviews-button-prev-2',
+      },
+    });
+
+  });
+</script>
